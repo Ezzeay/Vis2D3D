@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width= device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="js/pixi.min.js"></script>
+    <script src="https://superal.github.io/canvas2image/canvas2image.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/pixijs-grid/src/pixijs-grid.js"></script>
+    <script src="js/script.js"></script>
+    <script src="https://unpkg.com/eventemitter3@latest/umd/eventemitter3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/functions.js">
+    </script>
+
+    <ul class="classique">
+        <nav class="navbar-brand">
+            <a class="navbar-brand" href="#">
+                <img src="/logo/Logo noir Petit format.jpg" width="450" height="200" class="d-inline-block align-cebter">
+            </a>
+            <a class="brandname">
+                Simulateur 2D & 3D
+            </a>
+        </nav>
+
+    </ul>
+    <div class="container">
+        <a>Modeles</a>
+        <div class="container" id="container">
+            <script src="js/listmodel.js"></script>
+        </div>
+
+    </div>
+    <button id="MyButton" onclick="takeshot()">
+        Screenshot
+    </button>
+    <script>
+        let app;
+        let container;
+        let player;
+        let grid;
+        let bunny;
+        let bunnies = [];
+        var pi = 0;
+        var keys = {};
+        let keysDiv;
+        window.onload = function() {
+            app = new PIXI.Application({
+                width: 800,
+                height: 600,
+                backgroundColor: 0xAAAAA,
+                resolution: window.devicePixelRatio || 1,
+                antialiasing: true,
+                transparent: false,
+                preserveDrawingBuffer: true, // This is very important for us !
+                autoDensity: true
+            });
+            document.body.appendChild(app.view);
+            const grid = new PixiJSGrid(800).drawGrid();
+            container = new PIXI.Container();
+            /*app.stage.addChild(grid)*/
+            app.stage.addChild(container);
+            app.stage.addChild(grid);
+            //container.addChild(grid);
+            for (let i = 0; i < 50; i++) {
+                let xtmp = (i % 20) * 50;
+                let ytmp = Math.floor(i / 20) * 50;
+                bunnies.push(createMotif(xtmp, ytmp));
+                grid.addChild(bunnies[i]);
+            }
+
+
+        }
+
+        function updateMotif(delta) {
+            for (let i = 0; i < bunnies.length; i++) {
+                let xtmp = (i % 20) * 50;
+                let ytmp = Math.floor(i / 20) * 50;
+                bunnies.push(createMotif(xtmp, ytmp));
+                grid.addChild(bunnies[i]);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="keys"></div>
+</body>
+
+</html>

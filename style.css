@@ -1,0 +1,90 @@
+body {
+    background-color: rgb(222, 230, 176);
+}
+
+h1 {
+    color: blue;
+    text-align: center;
+}
+
+p {
+    color: red;
+    text-align: center;
+}
+
+a {
+    color: black;
+}
+
+img.mine {
+    width: 40px;
+    height: 40px;
+}
+
+ul.classique {
+    margin: 0;
+    padding: 0;
+    background-color: darkgoldenrod;
+    width: auto;
+}
+
+ul {
+    -moz-columns: auto;
+}
+
+nav {
+    color: black;
+    text-align: center;
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+}
+
+.brandname {
+    text-align: center;
+    max-width: 100px;
+    margin-left: 80%;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+canvas {
+    margin-left: 50%;
+}
+
+div {
+    max-width: 100px;
+    text-align: left;
+    background: wheat;
+    position: absolute;
+    top: 60px;
+    left: 40px;
+    border: tomato;
+}
+
+div.container {
+    position: fixed;
+    background-color: blanchedalmond;
+    top: 220px;
+    left: 20;
+    display: inline-block;
+    max-width: 500px;
+    height: 1000px;
+}
+
+#keys {
+    color: coral;
+    position: absolute;
+    top: 900px;
+    left: 40px;
+}
+
+#MyButton {
+    color: brown;
+    background-color: burlywood;
+    margin-left: 650px;
+}
