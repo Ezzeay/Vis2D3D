@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width= device-width, initial-scale=1.0">
+    <title>Simulateur 2D 3D</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="js/pixi.min.js"></script>
+
+    <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="https://superal.github.io/canvas2image/canvas2image.js"></script>
+    <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/pixijs-grid/src/pixijs-grid.js"></script>
+    <script src="js/script.js"></script>
+    <script src="https://unpkg.com/eventemitter3@latest/umd/eventemitter3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="js/functions.js"></script>
+
+
+
+    <script>
+        let app;
+        let container;
+        let player;
+        var grid;
+        var bunny;
+        var bunnies = [];
+        var pi = 0;
+        var keys = {};
+        let keysDiv;
+
+        window.onload = function() {
+            app = new PIXI.Application({
+                width: 800,
+                height: 600,
+                backgroundColor: 0x303030,
+                forceCanvas: false,
+                resolution: window.devicePixelRatio || 1,
+                antialiasing: true,
+                transparent: false,
+                preserveDrawingBuffer: true, // This is very important for us !
+                autoDensity: true
+            });
+            document.body.appendChild(app.view);
+            var grid = new PixiJSGrid(800).drawGrid();
+            grid.drawBoundaries = false;
+            container = new PIXI.Container();
+            app.stage.addChild(container);
+            app.stage.addChild(grid);
+            container.addChild(grid);
+            var mylist = document.getElementsByClassName('mine2');
+            var mylist2 = document.getElementsByClassName('mine');
+            /*
+            for (let i = 0; i < 50; i++) {
+                let xtmp = Math.floor(i % 16) * 25 + 25;
+                let ytmp = Math.floor(i / 16) * 50 + 25;
+                console.log("check this +" + xtmp + "and this y :" + ytmp);
+                bunnies.push(createMotif(xtmp, ytmp, '/modeles/belle-epoque.png'));
+                grid.addChild(bunnies[bunnies.length - 1]);
+            }
+            */
+            for (let i = 0; i < mylist.length; i++) {
+                mylist[i].addEventListener("click", folderclick);
+            };
+            var id = 0;
+            for (let i = 0; i < mylist2.length / 2; i++) {
+                if (list) {
+                    mylist2[2 * i].addEventListener("click", function() {
+                        try {
+                            if (id == 3) {
+                                id = 0;
+                                let string = list[Math.floor(id)].img_src;
+                                bunnies.push(createMotif(25, 25, string));
+                                app.stage.addChild(bunnies[bunnies.length - 1]);
+                                id = 0;
+                            }
+                            if (id < 3) {
+                                let string = list[Math.floor(id)].img_src;
+                                bunnies.push(createMotif(25, 25, string));
+                                app.stage.addChild(bunnies[bunnies.length - 1]);
+                                id++;
+                            }
+
+                        } catch (e) {
+                            console.log("YO", e);
+                        }
+                    }, false);
+                }
+            };
+
+        }
+    </script>
+</head>
+
+<body style="background-color: 	#505050;">
+    <ul class="classique">
+        <nav class="navbar-brand">
+            <a class="navbar-brand" href="index.html">
+                <img src="/logo/Logo_noir_Petit_format-removebg-preview.png" width="600" height="200" class="d-inline-block align-center">
+            </a>
+            <nav class="navbar-name">Simulateur 2D & 3D</nav>
+        </nav>
+
+    </ul>
+    <div class='wholeShit'>
+        <div class='mytooltip'>
+            <div class='rightClick showing'>
+                <div class='buttons'>
+                    <button class='but rotate'>&#x21B7;</button>
+                    <button class='but paint'>&#127912;</button>
+                    <button class='but delete'>&#x1F5D1;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="buttonscreen" onclick="takeshot()">Screenshot</button>
+
+    <div class="container" id="container">
+    </div>
+    <script src="js/listmodel.js"></script>
+
+
+
+    <script src="js/three.js" async></script>
+
+
+    <canvas id="painting" width="250" height="250" onload="loadimage()"></canvas>
+    <script>
+        var temp = document.getElementById("painting");
+        var tempctx = temp.getContext("2d");
+        var img1 = new Image();
+
+        img1.onload = function() {
+            //draw background image
+            tempctx.drawImage(img1, 0, 0);
+            //draw a box over the top
+            //tempctx.fillStyle = "rgba(200, 0, 0, 0.5)";
+            //empctx.fillRect(0, 0, 200, 200);
+        };
+        img1.src = 'modeles/echoppe.png';
+        var w = img1.width;
+        var h = img1.height;
+        console.log(h);
+        var imgdata = tempctx.getImageData(0, 0, w, h);
+        var rgba = imgdata.data;
+        for (var px = 0, ct = w * h * 4; px < ct; px += 4) {
+            var r = rgba[px];
+            var g = rgba[px + 1];
+            var b = rgba[px + 2];
+            var a = rgba[px + 3];
+        }
+        console.log(a);
+    </script>
+
+
+</body>
+
+</html>
